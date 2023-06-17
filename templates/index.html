@@ -1,0 +1,151 @@
+<html>
+    <head>
+        <title> Aplicação CRUD</title>
+        <link href="{{url_for('static', filename= 'css/bootstrap.min.css')}}" rel="stylesheet">
+        <link rel="shortcut icon" href="{{url_for('static', filename= 'teacher.png')}}" >
+    </head>
+    <body>
+        <div class="container">
+            <div class="well text-center">
+                <h1>Estudantes</h1>
+            </div>    
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col md-12">
+                    <h2>Lista dos estudantes<button type="button" class="btn btn-success pull-right" data-toggle="modal"  data-target="#mymodal"> Adicionar Estudante </button></h2>
+                    {%with messages = get_flashed_messages()%}
+                    {%if messages%}  
+                    {% for message in messages %}
+                
+                    <div class="alert alert-success alert-dismissable" role="alert">
+                
+                     <button type="button" class="close" data-dismiss="alert" aria-label ="close">
+                
+                         <span aria-hidden="true">&times;</span>
+                
+                     </button>
+                        {{message}}
+                
+                
+                    </div>
+                
+                
+                    {%endfor%}
+                    {%endif%}
+                    {%endwith%}
+                   
+
+
+                    <table class="table table-striped">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Ação</th>
+                        </tr>
+                        {% for row in estudantes %}
+                        <tr>
+                            <td>{{row.0}}</td>
+                            <td>{{row.1}}</td>
+                            <td>{{row.2}}</td>
+
+                            <td>
+                                <a href="/update/{{row.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Editar</a>
+                                <a href="/delete/{{row.0}}" class="btn btn-danger btn-xs" onclick="return confirm ('Você tem certeza que deseja excluir este estudante?')">Excluir</a>
+                            </td>
+                        </tr>
+                        
+
+                    
+                </div>
+            </div>
+
+                        <div id="modaledit{{row.0}}" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Atualizar os dados</h4>
+                                </div>
+                        
+                            <div class="modal-body">
+                        
+                                    <form action="{{ url_for('update') }}" method="POST">
+                                        <div class="form-group">
+                        
+                                        <label>Name:</label>
+                                            <input type="hidden"  name="id" value="{{row.0}}">
+                                            <input type="text" class="form-control" name="name" value="{{row.1}}">
+                        
+                                        </div>
+                                        <div class="form-group">
+                        
+                                            <label>E-mail:</label>
+                                            <input type="text" class="form-control" name="email" value="{{row.2}}">
+                        
+                                        </div>
+                                        <div class="form-group">
+                        
+                                            <button class="btn btn-primary" type="submit"> Atualizar os dados</button>
+                        
+                                        </div>
+                                    </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        {% endfor  %}
+
+
+                    </tbody>
+    
+    
+                </table>
+
+
+                        <div id="mymodal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                               <div class="modal-content">
+                                  <div class="modal-header">
+                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                     <h4 class="modal-title">Inserir os dados</h4>
+                                  </div>
+                         
+                              <div class="modal-body">
+                         
+                                     <form action="{{url_for('insert')}}" method="POST">
+                                        <div class="form-group">
+                         
+                                           <label>Name:</label>
+                                           <input type="text" class="form-control" name="name" required="1">
+                         
+                                        </div>
+                                        <div class="form-group">
+                         
+                                            <label>E-mail:</label>
+                                            <input type="text" class="form-control" name="email" required="1">
+                          
+                                         </div>
+                                         <div class="form-group">
+                         
+                                            <button class="btn btn-primary" type="submit"> Inserir os dados</button>
+                          
+                                         </div>
+                                     </form>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                              </div>
+                             </div>
+                           </div>
+                        </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+</html>
